@@ -23,11 +23,6 @@ class MainActivity : ComponentActivity() {
         setContentView(binding.root)
 
         binding.etSearchQuery.doOnTextChanged { text, _, _, _ ->
-            val query = text.toString()
-
-            if (query.trim().length < 3) {
-                binding.tvSearchResults.text = ""}
-
             viewModel.onQueryChanged(text.toString())
         }
 
@@ -38,7 +33,7 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.searchResults.collect { results ->
+                    viewModel.uiResults.collect { results ->
                         binding.tvSearchResults.text = results.joinToString("\n")
                     }
                 }
